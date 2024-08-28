@@ -28,7 +28,6 @@ class _HomePageState extends State<HomePage> {
 
   void decrement() {
     setState(() {
-      if (count == 0) return;
       count--;
     });
   }
@@ -38,6 +37,9 @@ class _HomePageState extends State<HomePage> {
       count++;
     });
   }
+
+  bool get isEmpty => count == 0;
+  bool get isFull => count == 20;
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +55,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Pode entrar",
-              style: TextStyle(
+            Text(
+              isFull ? "Está lotado" : "Pode entrar",
+              style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -65,9 +67,9 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(32),
               child: Text(
                 count.toString(),
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
+                style: TextStyle(
+                  fontSize: 100,
+                  color: isFull ? Colors.red : Colors.white,
                 ),
               ),
             ),
@@ -76,13 +78,14 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor:
+                        isEmpty ? Colors.white.withOpacity(0.2) : Colors.white,
                     fixedSize: const Size(100, 100),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onPressed: decrement,
+                  onPressed: isEmpty ? null : decrement,
                   child: const Text(
                     "Saiu",
                     style: TextStyle(
@@ -96,13 +99,14 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor:
+                        isFull ? Colors.white.withOpacity(0.2) : Colors.white,
                     fixedSize: const Size(100, 100),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onPressed: increment,
+                  onPressed: isFull ? null : increment,
                   child: const Text(
                     "Entrou",
                     style: TextStyle(
